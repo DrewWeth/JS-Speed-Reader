@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html> 
+<head>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <script src="jquery.js"></script>
+
+	<div class="container">
+		<h1>Skimmer</h1>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="input-group">
+				  <span class="input-group-addon">WPM</span>
+				  <input type="text" id="words_per_min" class="form-control" value="250">
+				</div>
+				<textarea class="form-control" id="input_reading" rows="3">Copy and paste your desired reading speed</textarea>
+   				<br>
+   				<center><button onclick="start()">Start</button></center>
+   			</div>
+   			<div class="col-md-5">
+				<center><font size="24">
+				  <table class="fixed-border" style="text-align: center;" border="0">
+				  	<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+    				<col width="30px"/>
+				  	<tr>
+				  		<td><span id="0"></span></td>
+				  		<td><span id="1"></span></td>
+				  		<td><span id="2"></span></td>
+				  		<td><span id="3"></span></td>
+				  		<td><span id="4"></span></td>
+				  		<td><u><font color="red"><span id="5"></span></font></u></td>
+				  		<td><span id="6"></span></td>
+				  		<td><span id="7"></span></td>
+				  		<td><span id="8"></span></td>
+				  		<td><span id="9"></span></td>
+				  		<td><span id="10"></span></td>
+				  	</tr>
+				  </table>
+				</font></center>
+				
+			</div>
+			<div class="col-md-4">
+				<font size="10">
+				<div id="text-crawler">
+				</font>
+				<div id="test_area"></div>
+				<div id="test_area2"></div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>	
+	function start (){
+		var i = 0;
+		var word_counter = 0;
+		var wpm = document.getElementById("words_per_min").value;
+		var quickness = 60 / wpm * 1000;
+		var text = document.getElementById("input_reading").value;
+		document.getElementById("text-crawler").innerHTML = text;
+		var split_string = text.split(" ");
+		var length = split_string.length
+		setInterval(function()
+		{
+			if (i < length)
+			{	
+				highlightText(split_string[i]);
+				var word_split = split_string[i].split("");
+				var word_len = word_split.length;
+				if (word_len < 3)
+				{
+					document.getElementById("1").value = "";
+					document.getElementById("2").value = "";
+					document.getElementById("3").value = "";
+					document.getElementById("4").value = "";
+					document.getElementById("5").value = word_split[0];
+					document.getElementById("6").value = word_split[1];
+					document.getElementById("7").value = "";
+					document.getElementById("8").value = "";
+					document.getElementById("9").value = "";
+					document.getElementById("10").value = "";
+				}
+				else
+				{
+					var mid_char = Math.floor(word_len / 2.0) - 1;
+					var right_dif = word_len - mid_char - 1;
+					var left_dif = word_len - right_dif - 1;
+					//document.getElementById("test_area").innerHTML = left_dif + " " + mid_char + " " + right_dif + " " + word_len;
+					//document.getElementById("test_area2").innerHTML += " " + split_string[i];
+					if (left_dif > 3)
+						document.getElementById("1").textContent = word_split[mid_char-4];
+					else
+						document.getElementById("1").textContent = "";
+					if (left_dif > 2)
+						document.getElementById("2").textContent = word_split[mid_char-3];
+					else
+						document.getElementById("2").textContent = "";
+					if (left_dif > 1)
+						document.getElementById("3").textContent = word_split[mid_char-2];
+					else
+						document.getElementById("3").textContent = "";
+					if (left_dif > 0)
+						document.getElementById("4").textContent = word_split[mid_char-1];
+					else
+						document.getElementById("4").textContent = "";
+
+						document.getElementById("5").textContent = word_split[mid_char];
+					
+					if (right_dif >	 0)
+						document.getElementById("6").textContent = word_split[mid_char+1];
+					else
+						document.getElementById("6").textContent = "";
+					if (right_dif > 1)	
+						document.getElementById("7").textContent = word_split[mid_char+2];
+					else
+						document.getElementById("7").textContent = "";
+					if (right_dif > 2)	
+						document.getElementById("8").textContent = word_split[mid_char+3];
+					else
+						document.getElementById("8").textContent = "";
+					if (right_dif > 3)	
+						document.getElementById("9").textContent = word_split[mid_char+4];
+					else
+						document.getElementById("9").textContent = "";
+					if (right_dif > 4)	
+						document.getElementById("10").textContent = word_split[mid_char+5];
+					else
+						document.getElementById("10").textContent = "";
+					}
+				i++;
+			}
+		}, quickness);
+	}
+
+	function highlightText(htext){
+	    var str = document.getElementById("text-crawler").innerHTML;
+	    str = str.replace(htext, '<span style="background-color:red;">' + htext + '</span>'); 
+	    document.getElementById("text-crawler").innerHTML = str;  
+	}
+
+</script>
+
+</html>
